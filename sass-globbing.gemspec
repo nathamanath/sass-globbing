@@ -18,5 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency 'sass', '>= 3.1'
+  s.add_development_dependency "test-unit", "~> 3.2.3"
+  s.add_development_dependency "pry", '~> 0.10.1'
 
 end

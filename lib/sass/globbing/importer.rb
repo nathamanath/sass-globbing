@@ -33,15 +33,11 @@ class Sass::Globbing::Importer < Sass::Importers::Filesystem
   end
 
   def find(name, options)
-    if options[:filename] # globs must be relative
       if name =~ GLOB
-        find_glob(name, options[:filename], options) { "/* No files to import found in #{comment_safe(name)} */" }
+        find_glob(name, options[:filename] || '', options) { "/* No files to import found in #{comment_safe(name)} */" }
       else
         super(name, options)
       end
-    else
-      nil
-    end
   end
 
   def each_globbed_file(glob, base_pathname, options)

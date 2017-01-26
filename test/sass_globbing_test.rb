@@ -1,12 +1,23 @@
 require 'test/unit'
 require 'sass'
 require 'sass-globbing'
+require 'pry'
+require 'open3'
 
 class SassGlobbingTest < Test::Unit::TestCase
 
   def test_can_import_globbed_files
     css = render_file("all.sass")
-    assert_match /deeply-nested/, css
+    assert_match(/deeply-nested/, css)
+    assert_match %r{No files to import found in doesnotexist/\*\\/foo\.\*}, css
+  end
+
+  def test_can_import_globbed_files_via_stdin
+    sass = File.read(File.expand_path('../fixtures/all.sass', __FILE__))
+    sass_dir = File.expand_path('../fixtures', __FILE__)
+    css, _, _= Open3.capture3("sass -r sass-globbing", stdin_data: sass, chdir: sass_dir)
+
+    assert_match(/deeply-nested/, css)
     assert_match %r{No files to import found in doesnotexist/\*\\/foo\.\*}, css
   end
 
